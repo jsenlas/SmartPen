@@ -1,0 +1,10 @@
+TargetPlatform.c:88:6:InitTargetPlatform	40	static
+TargetPlatform.c:301:6:InitMics	16	static
+TargetPlatform.c:311:6:DeInitMics	8	static
+TargetPlatform.c:343:6:LedOnTargetPlatform	8	static
+TargetPlatform.c:354:6:LedOffTargetPlatform	8	static
+TargetPlatform.c:364:6:LedToggleTargetPlatform	0	static
+TargetPlatform.c:374:10:GetPage	0	static
+TargetPlatform.c:397:10:GetBank	8	static
+TargetPlatform.c:434:10:UserFunctionForErasingFlash	32	static
+TargetPlatform.c:470:10:UserFunctionForSavingFlash	24	static

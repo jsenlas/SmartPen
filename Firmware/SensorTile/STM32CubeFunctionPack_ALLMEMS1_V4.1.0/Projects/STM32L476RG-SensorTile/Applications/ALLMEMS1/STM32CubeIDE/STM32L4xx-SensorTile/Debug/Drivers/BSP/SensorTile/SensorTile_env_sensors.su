@@ -1,0 +1,13 @@
+SensorTile_env_sensors.c:673:16:BSP_LPS22HB_WriteReg	24	static
+SensorTile_env_sensors.c:653:16:BSP_LPS22HB_DeInit	8	static
+SensorTile_env_sensors.c:625:16:BSP_LPS22HB_Init	40	static
+SensorTile_env_sensors.c:705:16:BSP_LPS22HB_ReadReg	24	static,ignoring_inline_asm
+SensorTile_env_sensors.c:80:9:BSP_ENV_SENSOR_Init	88	static
+SensorTile_env_sensors.c:168:9:BSP_ENV_SENSOR_DeInit	8	static
+SensorTile_env_sensors.c:194:9:BSP_ENV_SENSOR_GetCapabilities	8	static
+SensorTile_env_sensors.c:220:9:BSP_ENV_SENSOR_ReadID	8	static
+SensorTile_env_sensors.c:249:9:BSP_ENV_SENSOR_Enable	8	static
+SensorTile_env_sensors.c:288:9:BSP_ENV_SENSOR_Disable	8	static
+SensorTile_env_sensors.c:328:9:BSP_ENV_SENSOR_GetOutputDataRate	16	static
+SensorTile_env_sensors.c:368:9:BSP_ENV_SENSOR_SetOutputDataRate	16	static
+SensorTile_env_sensors.c:408:9:BSP_ENV_SENSOR_GetValue	16	static
