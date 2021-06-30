@@ -1,0 +1,1 @@
+/home/jakub/VUT_FIT/bakalarka2.0/src/BLE/scanner.py

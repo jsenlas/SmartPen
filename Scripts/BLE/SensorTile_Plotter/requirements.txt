@@ -1,0 +1,2 @@
+bluepy
+blue_st_sdk
