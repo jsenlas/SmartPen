@@ -77,11 +77,13 @@ class MyFeatureListener(FeatureListener):
     def on_update(self, feature, sample):
         """ To be called whenever the feature updates its data. """
         sample_values = [elem for elem in sample.get_data()]
-        record = dict(zip(sample.get_description(), sample.get_data()))
-        record['type'] = feature.get_name()
-        print(record)
-        #print(feature)
-        #self.file_pointer.write(feature)
+        #print(sample_values)
+        #record = dict(zip(sample.get_description(), sample.get_data()))
+        #record['type'] = feature.get_name()
+        #print(record)
+        line = ",".join(sample_values) + "\n"
+        print(line)
+        self.file_pointer.write(line)
 
 
 def choose_device(mngr):

@@ -68,16 +68,16 @@ def get_args():
 
 def add_arguments(parser):
     """ initializes argument parser with all options """
-    parser.add_argument("-o", "--only",
-                        help="Only is folowed by 'acc, gyro, mag, pre' options",
-                        choices=["acc", "gyro", "mag", "pre"],
-                        action="store")
+    #parser.add_argument("-o", "--only",
+                        #help="Only is folowed by 'acc, gyro, mag, pre' options",
+                        #choices=["acc", "gyro", "mag", "pre"],
+                        #action="store")
 
-    parser.add_argument("--pressure",
-                        help="Number of pressure sensors",
-                        type=int,
-                        choices=[0, 1, 2, 3, 4, 5],
-                        action="store")
+    #parser.add_argument("--pressure",
+                        #help="Number of pressure sensors",
+                        #type=int,
+                        #choices=[0, 1, 2, 3, 4, 5],
+                        #action="store")
 
     parser.add_argument("-p", "--port",
                         help="Select port you want to use. "

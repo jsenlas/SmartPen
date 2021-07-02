@@ -1,3 +1,0 @@
-MotionPE_Manager.c:60:6:MotionPE_manager_init	48	static
-MotionPE_Manager.c:84:6:MotionPE_manager_run	0	static
-MotionPE_Manager.c:95:6:MotionPE_manager_get_version	8	static

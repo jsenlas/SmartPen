@@ -14,6 +14,7 @@ list_outdated:
 
 run:
 	sudo python $(SCRIPT)
+	cat data.csv
 
 lint:
 	pylint $(SCRIPT)

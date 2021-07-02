@@ -206,6 +206,9 @@ num_data_types = len([i for i in format_flags.values() if i is True])
 
 fig, axes = plt.subplots(nrows=num_data_types, ncols=1, figsize=(25, 12), dpi=80)
 
+# overit funkcnost !!!
+fig.subplots_adjust(hspace=0.5)
+
 def onClick(event):
     global pause
     pause ^= True
