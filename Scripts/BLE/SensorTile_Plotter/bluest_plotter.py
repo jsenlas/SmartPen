@@ -17,12 +17,20 @@ import time
 from abc import abstractmethod
 import keyboard
 
+from bluepy.btle import BTLEException
+
 from blue_st_sdk.manager import Manager  # singleton
 from blue_st_sdk.manager import ManagerListener
 from blue_st_sdk.node import NodeListener
 from blue_st_sdk.feature import FeatureListener
 from blue_st_sdk.features.audio.adpcm.feature_audio_adpcm import FeatureAudioADPCM
 from blue_st_sdk.features.audio.adpcm.feature_audio_adpcm_sync import FeatureAudioADPCMSync
+from blue_st_sdk.features.feature_magnetometer import FeatureMagnetometer
+from blue_st_sdk.features.feature_accelerometer import FeatureAccelerometer
+from blue_st_sdk.features.feature_gyroscope import FeatureGyroscope
+
+class NoDevicesDiscovered(Exception):
+    pass
 
 # Bluetooth Scanning time in seconds (optional).
 SCANNING_TIME_S = 2
@@ -77,13 +85,16 @@ class MyFeatureListener(FeatureListener):
     def on_update(self, feature, sample):
         """ To be called whenever the feature updates its data. """
         sample_values = [elem for elem in sample.get_data()]
-        #print(sample_values)
+        print(sample_values)
         #record = dict(zip(sample.get_description(), sample.get_data()))
         #record['type'] = feature.get_name()
         #print(record)
-        line = ",".join(sample_values) + "\n"
-        print(line)
-        self.file_pointer.write(line)
+        try:
+            line = ",".join(sample_values) + "\n"
+            print(line)
+            self.file_pointer.write(line)
+        except:
+            print("I am here, the bug.")
 
 
 def choose_device(mngr):
@@ -93,7 +104,7 @@ def choose_device(mngr):
     # Listing discovered devices.
     if not discovered_devices:
         print('No Bluetooth devices found. Exiting...\n')
-        sys.exit(0)
+        raise NoDevicesDiscovered
 
     print('Available Bluetooth devices:')
 
@@ -155,54 +166,68 @@ def main(argv):
 
         features_to_listen_to = ["Magnetometer","Gyroscope","Accelerometer"]
         # Get features - characteristics running on the device
-        features = device.get_features()
+        device_features = device.get_features()
+        tmp = []
+        for f in device_features:
+            if isinstance(f, FeatureAccelerometer): # or isinstance(f, FeatureAccelerometer) or isinstance(f, FeatureGyroscope):
+                tmp.append(f)
+        features = tmp
         print('\nFeatures:')
         print(features)
-
+        
         features_list = []
         features_listeners = []
         idx = 0
-        for feature in features:
-            print(feature.get_name(), type(feature.get_name()))
         
-            if feature.get_name() in features_to_listen_to:
-                print(idx, feature.get_name())
-                features_list.append(feature)  # add a feature
-                features_listeners.append(MyFeatureListener(fp))  # register a listener
-                idx += 1
+        feature = features[0]
+        feature.add_listener(MyFeatureListener(fp))
+        device.enable_notifications(feature)
+        
+        #for feature in features:
+            #feature_listener = MyFeatureListener(fp)
+            #feature.add_listener(feature_listener)
+            #device.enable_notifications(feature)
+        #for feature in features:
+            #print(feature.get_name(), type(feature.get_name()))
+        
+            #if feature.get_name() in features_to_listen_to:
+                #print(idx, feature.get_name())
+                #features_list.append(feature)  # add a feature
+                #features_listeners.append(MyFeatureListener(fp))  # register a listener
+                #idx += 1
 
-                # on active listener
-                features_list[-1].add_listener(features_listeners[-1])
-                device.enable_notifications(feature)
-            
+                #on active listener
+                #features_list[-1].add_listener(features_listeners[-1])
+                #device.enable_notifications(feature)
+        
         print(features_list)
         #print(features_listeners)
 
-        print("Press 's' on the keyboard to stop listening to notifications")
-        print()
-        keyboard.wait('s')
+        # print("Press 's' on the keyboard to stop listening to notifications")
+        # print()
+        # keyboard.wait('s')
     
-        print("Disabling notifications.")
-        # Disabling notifications.
-        for feature, listener in zip(features_list, features_listeners):
-            device.disable_notifications(feature)
-            try:
-                feature.remove_listener(listener)
-            except NameError as nerr:
-                print(nerr)
+        # print("Disabling notifications.")
+        # # Disabling notifications.
+        # for feature, listener in zip(features_list, features_listeners):
+        #     device.disable_notifications(feature)
+        #     try:
+        #         feature.remove_listener(listener)
+        #     except NameError as nerr:
+        #         print(nerr)
 
     except KeyboardInterrupt:
-        try:
-            # Exiting.
-            print('\nExiting...\n')
-        except SystemExit:
-            os._exit(0)
+        pass
     except RuntimeError:
         os._exit(0)
-    except Exception as exc:
-        print(exc)
+    except BTLEException as exc:
+        print(eexc)
+    except NoDevicesDiscovered as exc:
+        sys.exit(0)
     finally:
+        print('\nExiting...')
         if fp is not None:
             fp.close()
+            print("File successfully closed")
 if __name__ == "__main__":
     main(sys.argv[1:])

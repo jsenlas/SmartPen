@@ -1,5 +1,6 @@
 SHELL=/bin/bash
-SCRIPT=bluest_plotter.py
+# SCRIPT=bluest_plotter.py
+SCRIPT=bluest_example1.py
 
 help:
 	echo "You can start by 'make install' and then 'make run'."

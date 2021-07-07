@@ -1,8 +1,6 @@
 import sys, select, os
 
 import serial
-# from math import atan2, asin2
-from numpy import sin, cos
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import simpson, cumulative_trapezoid
