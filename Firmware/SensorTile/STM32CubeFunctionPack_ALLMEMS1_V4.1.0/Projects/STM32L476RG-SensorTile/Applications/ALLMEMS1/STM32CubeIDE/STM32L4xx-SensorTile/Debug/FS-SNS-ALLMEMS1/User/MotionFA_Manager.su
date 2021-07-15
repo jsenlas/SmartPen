@@ -1,0 +1,6 @@
+MotionFA_Manager.c:61:6:MotionFA_manager_init	56	static
+MotionFA_Manager.c:91:6:MotionFA_manager_run	0	static
+MotionFA_Manager.c:118:6:MotionFA_manager_get_version	8	static
+MotionFA_Manager.c:128:6:MotionFA_manager_reset_counter	0	static
+MotionFA_Manager.c:154:6:MotionFA_manager_set_activity	0	static
+MotionFA_Manager.c:164:6:MotionFA_manager_get_activity	0	static

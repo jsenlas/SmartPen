@@ -45,11 +45,11 @@
 #define ALLMEMS1_ENABLE_SD_CARD_LOGGING
 
 /* For enabling MotionFA algorithm */
-//#define ALLMEMS1_MOTIONFA
+#define ALLMEMS1_MOTIONFA
 
 /* For enabling MotionCP algorithm */
 #ifndef ALLMEMS1_MOTIONFA
-//  #define ALLMEMS1_MOTIONCP
+  #define ALLMEMS1_MOTIONCP
 #endif /* ALLMEMS1_MOTIONFA */
 
 /* Define The transmission interval in Multiple of 10ms for quaternions*/

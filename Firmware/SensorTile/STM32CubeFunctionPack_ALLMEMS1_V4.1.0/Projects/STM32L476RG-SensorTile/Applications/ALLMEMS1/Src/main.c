@@ -359,7 +359,7 @@ static volatile uint32_t TimeStamp = 0;
 volatile uint32_t HCI_ProcessEvent=0;
 
 /* Accelerometer event wakeup mode selection */
-const uint8_t WakeupSource = ACC_WAKE_UP;  // ACC_DOUBLE_TAP;
+const uint8_t WakeupSource = ACC_DOUBLE_TAP;
 
 /* flag initialized at 0, set when exit from shutdown detected */
 static volatile uint32_t out_of_shutdown;

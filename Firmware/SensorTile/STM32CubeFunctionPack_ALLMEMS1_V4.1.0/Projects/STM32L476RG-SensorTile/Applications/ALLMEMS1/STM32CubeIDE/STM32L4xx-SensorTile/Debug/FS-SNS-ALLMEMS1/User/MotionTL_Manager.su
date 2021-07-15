@@ -1,0 +1,10 @@
+MotionTL_Manager.c:98:6:MotionTL_manager_run	0	static
+MotionTL_Manager.c:109:6:MotionTL_manager_getAngles	0	static
+MotionTL_Manager.c:120:6:MotionTL_manager_get_version	8	static
+MotionTL_Manager.c:130:6:MotionTL_manager_calibratePosition	1216	static
+MotionTL_Manager.c:145:18:MotionTL_manager_getCalibrationValues	0	static
+MotionTL_Manager.c:155:6:MotionTL_manager_setCalibrationValues	0	static
+MotionTL_Manager.c:165:6:MotionTL_manager_getEstimatedMeasTime	0	static
+MotionTL_Manager.c:175:9:MotionTL_manager_LoadCalValuesFromNVM	40	static
+MotionTL_Manager.c:65:6:MotionTL_manager_init	72	static
+MotionTL_Manager.c:196:9:MotionTL_manager_SaveCalValuesInNVM	32	static
