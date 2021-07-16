@@ -359,7 +359,7 @@ static volatile uint32_t TimeStamp = 0;
 volatile uint32_t HCI_ProcessEvent=0;
 
 /* Accelerometer event wakeup mode selection */
-const uint8_t WakeupSource = ACC_DOUBLE_TAP;
+const uint8_t WakeupSource = ACC_WAKE_UP; // ACC_DOUBLE_TAP;
 
 /* flag initialized at 0, set when exit from shutdown detected */
 static volatile uint32_t out_of_shutdown;
@@ -2537,7 +2537,7 @@ void MCU_PowerSave(void)
   __SPI1_CLK_DISABLE();
   //HAL_SPI_DeInit(&SpiHandle);
   HAL_SPI_DeInit(&SPI_SD_Handle);
-  //HAL_I2C_DeInit(&I2C_SENSORTILE_Handle);
+//  HAL_I2C_DeInit(&I2C_SENSORTILE_Handle);
 //        USBD_DeInit(&USBD_Device);
   /* Disable DFSDM clock */
   __HAL_RCC_DFSDM_CLK_DISABLE();

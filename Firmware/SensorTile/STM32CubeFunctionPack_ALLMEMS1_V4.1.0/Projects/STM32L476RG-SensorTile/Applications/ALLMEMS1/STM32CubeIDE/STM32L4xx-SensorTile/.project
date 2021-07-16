@@ -392,6 +392,16 @@
 			<locationURI>PARENT-2-PROJECT_LOC/Src/MotionVC_Manager.c</locationURI>
 		</link>
 		<link>
+			<name>FS-SNS-ALLMEMS1/User/ADS1115.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/ADS1115.c</locationURI>
+		</link>
+		<link>
+			<name>FS-SNS-ALLMEMS1/User/ADS1115_LowLevel.c</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/Src/ADS1115_LowLevel.c</locationURI>
+		</link>
+		<link>
 			<name>FS-SNS-ALLMEMS1/User/OTA.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/OTA.c</locationURI>
@@ -742,4 +752,10 @@
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/BlueNRG-MS/hci/hci_tl_patterns/Basic/hci_tl.c</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>ADS1115</name>
+			<value>file:/C:/Users/hp/Documents/GitHub/SmartPen_scripts/Firmware/SensorTile/STM32CubeFunctionPack_ALLMEMS1_V4.1.0/Projects/STM32L476RG-SensorTile/Applications/ALLMEMS1/Src</value>
+		</variable>
+	</variableList>
 </projectDescription>
