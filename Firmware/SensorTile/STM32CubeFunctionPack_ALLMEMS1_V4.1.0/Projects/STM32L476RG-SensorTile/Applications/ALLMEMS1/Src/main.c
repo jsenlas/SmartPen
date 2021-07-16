@@ -416,11 +416,15 @@ unsigned char AccelleroCalibrationDone = 0;
 unsigned char MagnetoCalibrationDone = 0;
 static uint32_t mag_time_stamp = 0;
 
+I2C_HandleTypeDef hi2c3;
+
 /* Private function prototypes -----------------------------------------------*/
 static void SystemClock_Config(void);
 
 static void Init_BlueNRG_Custom_Services(void);
 static void Init_BlueNRG_Stack(void);
+
+static void MX_I2C3_Init(void);
 
 static unsigned char ResetMagnetoCalibrationInMemory(void);
 
@@ -546,6 +550,8 @@ int main(void)
   /* For enabling CRC clock for using motion libraries (for checking if STM32 microprocessor is used)*/
   MX_CRC_Init();
   
+  MX_I2C3_Init();
+
   /* Check the MetaDataManager */
  InitMetaDataManager((void *)&known_MetaData,MDM_DATA_TYPE_GMD,NULL); 
   
@@ -637,7 +643,7 @@ int main(void)
   }
 
 //  /* Set Accelerometer Full Scale to 2G */
-//  Set2GAccelerometerFullScale();
+  Set2GAccelerometerFullScale(); // set to 2G 434
 
   /* Read the Acc Sensitivity */
   BSP_MOTION_SENSOR_GetSensitivity(ACCELERO_INSTANCE,MOTION_ACCELERO,&sensitivity);
@@ -922,6 +928,54 @@ int main(void)
     __WFI();
   }
 }
+
+
+/**
+  * @brief I2C3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C3_Init(void)
+{
+
+  /* USER CODE BEGIN I2C3_Init 0 */
+
+  /* USER CODE END I2C3_Init 0 */
+
+  /* USER CODE BEGIN I2C3_Init 1 */
+
+  /* USER CODE END I2C3_Init 1 */
+  hi2c3.Instance = I2C3;
+  hi2c3.Init.Timing = 0x00000004;
+  hi2c3.Init.OwnAddress1 = 0;
+  hi2c3.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c3.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c3.Init.OwnAddress2 = 0;
+  hi2c3.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c3.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c3.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c3, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c3, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C3_Init 2 */
+
+  /* USER CODE END I2C3_Init 2 */
+
+}
+
 
 /**
   * @brief  This function sets the ACC FS to 2g
@@ -2445,6 +2499,9 @@ static void SystemClock_Config(void)
     while(1);
   }
   
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_I2C3;
+  PeriphClkInitStruct.I2c3ClockSelection = RCC_I2C3CLKSOURCE_PCLK1;
+
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
   PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
   if(HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
@@ -2459,7 +2516,7 @@ static void SystemClock_Config(void)
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USB;
   PeriphClkInitStruct.UsbClockSelection = RCC_USBCLKSOURCE_MSI;
   HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
-  
+
   /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
   clocks dividers */
   RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);

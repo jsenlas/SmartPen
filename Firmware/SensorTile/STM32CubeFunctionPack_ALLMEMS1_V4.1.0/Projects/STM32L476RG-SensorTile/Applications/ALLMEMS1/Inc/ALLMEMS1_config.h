@@ -97,6 +97,7 @@ if QUAT_UPDATE_MUL_10MS!=3, then SEND_N_QUATERNIONS must be ==1
 #define HUMIDITY_INSTANCE       HTS221_0
 #define TEMPERATURE_INSTANCE_2  LPS22HB_0
 #define PRESSURE_INSTANCE       LPS22HB_0
+#define ADS_FSR_INSTANCE		ADS1115_0
 /*************************************/
 
 /* Package Version only numbers 0->9 */

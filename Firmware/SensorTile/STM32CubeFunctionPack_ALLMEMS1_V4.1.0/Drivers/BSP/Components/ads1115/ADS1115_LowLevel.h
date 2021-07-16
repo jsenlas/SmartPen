@@ -1,9 +1,9 @@
 // #include "stm32f4xx_i2c.h"
 // #include "stm32f4xx_gpio.h"
 // #include "stm32f4xx_rcc.h"
-//#include "stm32l4xx_hal_i2c.h"
-#include "ALLMEMS1_config.h"
-#include "stdint.h"
+#include "stm32l4xx_hal.h"
+ #include "ALLMEMS1_config.h"
+ #include "stdint.h"
 
 void I2C_StartTransmission(I2C_TypeDef* I2Cx, uint8_t transmissionDirection,  uint8_t slaveAddress);
 

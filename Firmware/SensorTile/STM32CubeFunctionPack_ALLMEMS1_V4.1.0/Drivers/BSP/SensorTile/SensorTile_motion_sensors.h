@@ -59,6 +59,8 @@ extern "C" {
 #define USE_MOTION_SENSOR_LSM303AGR_MAG_0    1
 #endif
 
+#include "ADS1115.h"
+
 #if (USE_MOTION_SENSOR_LSM6DSM_0 == 1)
 #include "lsm6dsm.h"
 #endif

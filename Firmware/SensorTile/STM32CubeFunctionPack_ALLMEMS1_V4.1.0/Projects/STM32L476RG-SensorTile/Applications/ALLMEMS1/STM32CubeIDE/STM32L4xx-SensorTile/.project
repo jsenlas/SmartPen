@@ -392,16 +392,6 @@
 			<locationURI>PARENT-2-PROJECT_LOC/Src/MotionVC_Manager.c</locationURI>
 		</link>
 		<link>
-			<name>FS-SNS-ALLMEMS1/User/ADS1115.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/ADS1115.c</locationURI>
-		</link>
-		<link>
-			<name>FS-SNS-ALLMEMS1/User/ADS1115_LowLevel.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Src/ADS1115_LowLevel.c</locationURI>
-		</link>
-		<link>
 			<name>FS-SNS-ALLMEMS1/User/OTA.c</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/Src/OTA.c</locationURI>
@@ -585,6 +575,11 @@
 			<name>Drivers/BSP/Components/lps22hb_reg.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Drivers/BSP/Components/lps22hb/lps22hb_reg.c</locationURI>
+		</link>
+		<link>
+			<name>Drivers/BSP/Components/ads1115.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Drivers/BSP/Components/ads1115/ads1115.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/BSP/Components/lsm303agr.c</name>

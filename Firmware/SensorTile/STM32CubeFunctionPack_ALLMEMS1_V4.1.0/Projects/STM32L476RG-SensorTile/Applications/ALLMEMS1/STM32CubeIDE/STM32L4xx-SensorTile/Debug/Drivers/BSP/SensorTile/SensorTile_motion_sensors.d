@@ -48,6 +48,8 @@ Drivers/BSP/SensorTile/SensorTile_motion_sensors.o: \
  ../../../../../../../Drivers/BSP/SensorTile/SensorTile_bus.h \
  ../../../Inc/SensorTile_errno.h \
  ../../../../../../../Drivers/BSP/Components/Common/motion_sensor.h \
+ ../../../Inc/ADS1115.h ../../../Inc/ADS1115_LowLevel.h \
+ ../../../Inc/ALLMEMS1_config.h \
  ../../../../../../../Drivers/BSP/Components/lsm6dsm/lsm6dsm.h \
  ../../../../../../../Drivers/BSP/Components/lsm6dsm/lsm6dsm_reg.h \
  ../../../../../../../Drivers/BSP/Components/lsm303agr/lsm303agr.h \
@@ -148,6 +150,12 @@ C:/Users/hp/Documents/GitHub/SmartPen_scripts/Firmware/SensorTile/STM32CubeFunct
 ../../../Inc/SensorTile_errno.h:
 
 ../../../../../../../Drivers/BSP/Components/Common/motion_sensor.h:
+
+../../../Inc/ADS1115.h:
+
+../../../Inc/ADS1115_LowLevel.h:
+
+../../../Inc/ALLMEMS1_config.h:
 
 ../../../../../../../Drivers/BSP/Components/lsm6dsm/lsm6dsm.h:
 

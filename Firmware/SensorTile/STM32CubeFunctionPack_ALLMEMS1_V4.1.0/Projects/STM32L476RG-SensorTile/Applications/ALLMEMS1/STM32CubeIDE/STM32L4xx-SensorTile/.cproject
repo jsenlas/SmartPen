@@ -93,6 +93,8 @@
                                     									
                                     <listOptionValue builtIn="false" value="../../../../../../../Drivers/BSP/Components/Common"/>
                                     									
+                                    <listOptionValue builtIn="false" value="../../../../../../../Drivers/BSP/Components/ads1115"/>
+                                    									
                                     <listOptionValue builtIn="false" value="../../../../../../../Drivers/BSP/Components/lsm6dsm"/>
                                     									
                                     <listOptionValue builtIn="false" value="../../../../../../../Drivers/BSP/Components/hts221"/>
