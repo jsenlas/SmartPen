@@ -59,7 +59,7 @@ extern "C" {
 #define USE_MOTION_SENSOR_LSM303AGR_MAG_0    1
 #endif
 
-#include "ADS1115.h"
+//#include "ADS1115.h"
 
 #if (USE_MOTION_SENSOR_LSM6DSM_0 == 1)
 #include "lsm6dsm.h"
@@ -86,6 +86,15 @@ typedef struct
   int32_t y;
   int32_t z;
 } BSP_MOTION_SENSOR_Axes_t;
+
+typedef struct
+{
+  //int16_t v; // if 5 sensors are used ADS1115 has only 4 ports so it is not used
+  int16_t w;
+  int16_t x;
+  int16_t y;
+  int16_t z;
+} BSP_ADS1115_SENSOR_Axes_t;
 
 typedef struct
 {
@@ -117,6 +126,7 @@ typedef struct
 #define MOTION_GYRO             1U
 #define MOTION_ACCELERO         2U
 #define MOTION_MAGNETO          4U
+#define MOTION_PRESSURE			5U
 
 #define MOTION_FUNCTIONS_NBR    3U
 #define MOTION_INSTANCES_NBR    (USE_MOTION_SENSOR_LSM6DSM_0 + USE_MOTION_SENSOR_LSM303AGR_MAG_0 + USE_MOTION_SENSOR_LSM303AGR_ACC_0)

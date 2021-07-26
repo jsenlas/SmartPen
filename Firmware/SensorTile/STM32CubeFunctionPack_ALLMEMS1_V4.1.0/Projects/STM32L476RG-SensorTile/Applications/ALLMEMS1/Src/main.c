@@ -417,6 +417,7 @@ unsigned char MagnetoCalibrationDone = 0;
 static uint32_t mag_time_stamp = 0;
 
 I2C_HandleTypeDef hi2c3;
+ADS1xx5_I2C i2c;
 
 /* Private function prototypes -----------------------------------------------*/
 static void SystemClock_Config(void);
@@ -550,8 +551,6 @@ int main(void)
   /* For enabling CRC clock for using motion libraries (for checking if STM32 microprocessor is used)*/
   MX_CRC_Init();
   
-  MX_I2C3_Init();
-
   /* Check the MetaDataManager */
  InitMetaDataManager((void *)&known_MetaData,MDM_DATA_TYPE_GMD,NULL); 
   
@@ -590,6 +589,10 @@ int main(void)
   /* Set Node Name */
   ReCallNodeNameFromMemory();
   
+  MX_I2C3_Init();
+  ADS1115(&i2c, &hi2c3, ADS_ADDR_GND);
+
+
 #ifdef ALLMEMS1_ENABLE_SD_CARD_LOGGING
   ReCallDataLogStatusFromMemory();
   ReCallMemsDataFileNameFromMemory();
@@ -1324,6 +1327,7 @@ static void SendMotionData(void)
   BSP_MOTION_SENSOR_Axes_t ACC_Value;
   BSP_MOTION_SENSOR_Axes_t GYR_Value;
   BSP_MOTION_SENSOR_Axes_t MAG_Value;
+  BSP_ADS1115_SENSOR_Axes_t FSR_Value;
 
   /* Read the Acc values */
   BSP_MOTION_SENSOR_GetAxes(ACCELERO_INSTANCE,MOTION_ACCELERO,&ACC_Value);
@@ -1334,7 +1338,13 @@ static void SendMotionData(void)
   /* Read the Gyro values */
   BSP_MOTION_SENSOR_GetAxes(GYRO_INSTANCE,MOTION_GYRO, &GYR_Value);
 
-  AccGyroMag_Update(&ACC_Value,&GYR_Value,&MAG_Value);
+  /* Read ADS1115 values */
+  FSR_Value.w = ADSreadADC_SingleEnded(&i2c, A0);
+  FSR_Value.x = ADSreadADC_SingleEnded(&i2c, A1);
+  FSR_Value.y = ADSreadADC_SingleEnded(&i2c, A2);
+  FSR_Value.z = ADSreadADC_SingleEnded(&i2c, A3);
+
+  AccGyroMag_Update(&ACC_Value,&GYR_Value,&MAG_Value, &FSR_Value);
 }
 
 /* Code for MotionAR integration - Start Section */
@@ -2498,9 +2508,14 @@ static void SystemClock_Config(void)
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK){
     while(1);
   }
-  
+  // 434
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_I2C3;
   PeriphClkInitStruct.I2c3ClockSelection = RCC_I2C3CLKSOURCE_PCLK1;
+  if(HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+  {
+    while(1);
+  }
+  // 434
 
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_RTC;
   PeriphClkInitStruct.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;

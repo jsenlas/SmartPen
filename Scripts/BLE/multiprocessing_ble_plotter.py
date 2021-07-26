@@ -1,9 +1,17 @@
-""" PLotting accelerometer, gyroscope and magnetometer data from Bluetooth in realtime
+"""
+    File name:      multiprocessing_ble_plotter.py
+    Author:         Jakub Sencak
+    Email:          xsenca00@stud.fit.vutbr.cz
+    Date created:   2021/6/16
+    Date last modified: 2021/7/12
+    Python Version:     3.9
+
+    PLotting accelerometer, gyroscope and magnetometer data from Bluetooth in realtime
 
     Based on BLlueST SDK example_2 and inspired
     by https://matplotlib.org/stable/gallery/misc/multiprocess_sgskip.html
     beacause Threading (from the SDK example) cannot be used with matplotlib,
-    whisch already uses threading.
+    which already uses threading.
 
     Limitations: this app is quite power hungry, on i7 6600 it uses up to 20% on every core.
 
@@ -22,6 +30,8 @@ from collections import deque
 import matplotlib.pyplot as plt
 import numpy as np
 
+from scipy.signal import butter, sosfilt
+
 from blue_st_sdk.manager import Manager
 from blue_st_sdk.manager import ManagerListener
 from blue_st_sdk.node import NodeListener
@@ -31,6 +41,17 @@ from blue_st_sdk.features.feature_accelerometer import FeatureAccelerometer
 from blue_st_sdk.features.feature_gyroscope import FeatureGyroscope
 
 SCANNING_TIME_S = 4
+
+# filtering based on Madgwick example from gait tracking
+SAMPLE_PERIOD = 1/20  # data collection frequency
+FILTER_CUTOFF = 0.001
+FILTER_CONST_HIGHPASS = (2*FILTER_CUTOFF)/(1/SAMPLE_PERIOD)  # constant for the filter
+FILTER_CUTOFF = 5
+FILTER_CONST_LOWPASS = (2*FILTER_CUTOFF)/(1/SAMPLE_PERIOD)  # constant for the filter
+
+# filtering
+sos_high = butter(1, FILTER_CONST_HIGHPASS, btype='high', analog=False, output='sos', fs=None)
+sos_low = butter(1, FILTER_CONST_LOWPASS, btype='low', analog=False, output='sos')
 
 # INTERFACES
 
@@ -134,10 +155,10 @@ class ProcessPlotter:
 
         self.pipe = pipe
         self.fig, self.ax = plt.subplots(figsize=(25, 2))
-        
+
         if self.data_type == "Accelerometer":
             self.ax.set(xlim=(0, self.max_l),
-                        ylim=(-2000, 2000),
+                        ylim=(-1000, 1000),
                         autoscale_on=False,
                         title=self.data_type,
                         xlabel='samples',
@@ -171,6 +192,66 @@ class ProcessPlotter:
         plt.show()
 
 
+class AccProcessPlotter(ProcessPlotter):
+    """ basically a ProcessPlotter but it also filters the raw accelerometer data """
+    def __init__(self, data_type):
+        """ docstring """
+        self.data_type = data_type
+        self.max_l = 300
+        self.data_x = deque(maxlen=self.max_l)
+        self.data_y = deque(maxlen=self.max_l)
+        self.data_z = deque(maxlen=self.max_l)
+
+        self.pipe = None
+        self.fig = None
+        self.ax = None
+        self.graph1 = None
+        self.graph2 = None
+        self.graph3 = None
+        self.gravity = [0.0,0.0,0.0]
+        self.linear_acceleration = [0.0,0.0,0.0]
+
+    def call_back(self):
+        """ Callback that receives data from FeatureListener """
+        while self.pipe.poll():
+            rcvd_data = self.pipe.recv()  # get data
+            # print(rcvd_data)
+            if rcvd_data is None:
+                self.terminate()
+                return False
+
+            alpha = 0.8
+
+            # Isolate the force of gravity with the low-pass filter.
+            self.gravity[0] = alpha * self.gravity[0] + (1 - alpha) * rcvd_data[0]
+            self.gravity[1] = alpha * self.gravity[1] + (1 - alpha) * rcvd_data[1]
+            self.gravity[2] = alpha * self.gravity[2] + (1 - alpha) * rcvd_data[2]
+
+            # Remove the gravity contribution with the high-pass filter.
+            self.linear_acceleration[0] = rcvd_data[0] - self.gravity[0]
+            self.linear_acceleration[1] = rcvd_data[1] - self.gravity[1]
+            self.linear_acceleration[2] = rcvd_data[2] - self.gravity[2]
+
+            # save data to deque
+            self.data_x.appendleft(self.linear_acceleration[0])
+            self.data_y.appendleft(self.linear_acceleration[1])
+            self.data_z.appendleft(self.linear_acceleration[2])
+
+            filt_data_x = sosfilt(sos_low, sosfilt(sos_high, self.data_x))
+            filt_data_y = sosfilt(sos_low, sosfilt(sos_high, self.data_y))
+            filt_data_z = sosfilt(sos_low, sosfilt(sos_high, self.data_z))
+
+            # set data as in animation
+            t = np.arange(len(filt_data_x))
+            self.graph1.set_data(t, filt_data_x)
+            self.graph2.set_data(t, filt_data_y)
+            self.graph3.set_data(t, filt_data_z)
+
+            # display data
+            self.fig.canvas.draw()
+
+        return True
+
 class MyFeatureListener(FeatureListener):
     """ Implementation of the interface used by the Feature class to notify that a
         feature has updated its data.
@@ -182,9 +263,12 @@ class MyFeatureListener(FeatureListener):
         # self.flag = True  # I need to get the feature name just once
         self.name = feature.get_name()
         self.name_short = self.name[0]
-            
+
         self.plot_pipe, plotter_pipe = mp.Pipe()
-        self.plotter = ProcessPlotter(self.name)
+        if self.name:
+            self.plotter = AccProcessPlotter(self.name)
+        else:
+            self.plotter = ProcessPlotter(self.name)
         self.plot_process = mp.Process(
             target=self.plotter, args=(plotter_pipe,), daemon=True)
         self.plot_process.start()

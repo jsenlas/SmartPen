@@ -98,6 +98,8 @@ extern "C" {
   
 #define BSP_AUDIO_OUT_IT_PRIORITY       7
 
+//#define ADS1115
+
 #ifdef __cplusplus
 }
 #endif

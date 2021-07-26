@@ -71,8 +71,6 @@ Middlewares/FatFs/Core/ff_gen_drv.o: \
  ../../../../../../../Drivers/BSP/Components/stc3115/component.h \
  ../../../../../../../Drivers/BSP/SensorTile/SensorTile_motion_sensors.h \
  ../../../../../../../Drivers/BSP/Components/Common/motion_sensor.h \
- ../../../Inc/ADS1115.h ../../../Inc/ADS1115_LowLevel.h \
- ../../../Inc/ALLMEMS1_config.h \
  ../../../../../../../Drivers/BSP/Components/lsm6dsm/lsm6dsm.h \
  ../../../../../../../Drivers/BSP/Components/lsm6dsm/lsm6dsm_reg.h \
  ../../../../../../../Drivers/BSP/Components/lsm303agr/lsm303agr.h \
@@ -80,12 +78,14 @@ Middlewares/FatFs/Core/ff_gen_drv.o: \
  ../../../../../../../Drivers/BSP/SensorTile/SensorTile_motion_sensors_ex.h \
  ../../../../../../../Drivers/BSP/SensorTile/SensorTile_motion_sensors.h \
  ../../../../../../../Drivers/BSP/SensorTile/SensorTile_sd.h \
+ ../../../Inc/ALLMEMS1_config.h \
  ../../../../../../../Middlewares/ST/STM32_MetaDataManager/MetaDataManager.h \
  ../../../Inc/MetaDataManager_Config.h ../../../Inc/MotionAR_Manager.h \
  ../../../../../../../Middlewares/ST/STM32_MotionAR_Library/Inc/motion_ar.h \
  ../../../Inc/MotionFA_Manager.h \
  ../../../../../../../Middlewares/ST/STM32_MotionFA_Library/Inc/motion_fa.h \
  ../../../Inc/main.h ../../../Inc/console.h \
+ ../../../../../../../Drivers/BSP/Components/ads1115/ADS1115.h \
  ../../../Inc/MotionFX_Manager.h \
  ../../../../../../../Middlewares/ST/STM32_MotionFX_Library/Inc/motion_fx.h \
  ../../../Inc/MotionGR_Manager.h \
@@ -260,12 +260,6 @@ C:/Users/hp/Documents/GitHub/SmartPen_scripts/Firmware/SensorTile/STM32CubeFunct
 
 ../../../../../../../Drivers/BSP/Components/Common/motion_sensor.h:
 
-../../../Inc/ADS1115.h:
-
-../../../Inc/ADS1115_LowLevel.h:
-
-../../../Inc/ALLMEMS1_config.h:
-
 ../../../../../../../Drivers/BSP/Components/lsm6dsm/lsm6dsm.h:
 
 ../../../../../../../Drivers/BSP/Components/lsm6dsm/lsm6dsm_reg.h:
@@ -279,6 +273,8 @@ C:/Users/hp/Documents/GitHub/SmartPen_scripts/Firmware/SensorTile/STM32CubeFunct
 ../../../../../../../Drivers/BSP/SensorTile/SensorTile_motion_sensors.h:
 
 ../../../../../../../Drivers/BSP/SensorTile/SensorTile_sd.h:
+
+../../../Inc/ALLMEMS1_config.h:
 
 ../../../../../../../Middlewares/ST/STM32_MetaDataManager/MetaDataManager.h:
 
@@ -295,6 +291,8 @@ C:/Users/hp/Documents/GitHub/SmartPen_scripts/Firmware/SensorTile/STM32CubeFunct
 ../../../Inc/main.h:
 
 ../../../Inc/console.h:
+
+../../../../../../../Drivers/BSP/Components/ads1115/ADS1115.h:
 
 ../../../Inc/MotionFX_Manager.h:
 

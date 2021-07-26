@@ -557,6 +557,11 @@
 			<locationURI>PARENT-6-PROJECT_LOC/Drivers/BSP/Components/stc3115/STC3115_Driver.c</locationURI>
 		</link>
 		<link>
+			<name>Drivers/BSP/Components/ads1115.c</name>
+			<type>1</type>
+			<locationURI>PARENT-6-PROJECT_LOC/Drivers/BSP/Components/ads1115/ads1115.c</locationURI>
+		</link>
+		<link>
 			<name>Drivers/BSP/Components/hts221.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Drivers/BSP/Components/hts221/hts221.c</locationURI>
@@ -575,11 +580,6 @@
 			<name>Drivers/BSP/Components/lps22hb_reg.c</name>
 			<type>1</type>
 			<locationURI>PARENT-6-PROJECT_LOC/Drivers/BSP/Components/lps22hb/lps22hb_reg.c</locationURI>
-		</link>
-		<link>
-			<name>Drivers/BSP/Components/ads1115.c</name>
-			<type>1</type>
-			<locationURI>PARENT-6-PROJECT_LOC/Drivers/BSP/Components/ads1115/ads1115.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/BSP/Components/lsm303agr.c</name>
@@ -747,10 +747,4 @@
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/ST/BlueNRG-MS/hci/hci_tl_patterns/Basic/hci_tl.c</locationURI>
 		</link>
 	</linkedResources>
-	<variableList>
-		<variable>
-			<name>ADS1115</name>
-			<value>file:/C:/Users/hp/Documents/GitHub/SmartPen_scripts/Firmware/SensorTile/STM32CubeFunctionPack_ALLMEMS1_V4.1.0/Projects/STM32L476RG-SensorTile/Applications/ALLMEMS1/Src</value>
-		</variable>
-	</variableList>
 </projectDescription>

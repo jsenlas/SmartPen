@@ -348,7 +348,7 @@ void DATALOG_SD_NewLine(void)
   f_write(&MyFile, (const void*)&newLine, 2, (void *)&byteswritten);
 }
 
-void saveData(char *myData, float *Quaternion, BSP_MOTION_SENSOR_Axes_t acc, BSP_MOTION_SENSOR_Axes_t gyro, BSP_MOTION_SENSOR_Axes_t magn, float press, float temp1, float temp2, float humi, uint16_t linesNum)
+void saveData(char *myData, float *Quaternion, BSP_MOTION_SENSOR_Axes_t acc, BSP_MOTION_SENSOR_Axes_t gyro, BSP_MOTION_SENSOR_Axes_t magn, BSP_ADS1115_SENSOR_Axes_t fsr_pressure, float press, float temp1, float temp2, float humi, uint16_t linesNum)
 {
   uint8_t v_mode;
   
@@ -609,7 +609,7 @@ static uint32_t csvProcess_HeaderInit(void)
   pHeader[129]= '1';
   pHeader[130]= ' ';
   pHeader[131]= '[';
-  pHeader[132]= '°';
+  pHeader[132]= 'ï¿½';
   pHeader[133]= 'C';
   pHeader[134]= ']';
   pHeader[135]= ',';
@@ -618,7 +618,7 @@ static uint32_t csvProcess_HeaderInit(void)
   pHeader[137]= '2';
   pHeader[138]= ' ';
   pHeader[139]= '[';
-  pHeader[140]= '°';
+  pHeader[140]= 'ï¿½';
   pHeader[141]= 'C';
   pHeader[142]= ']';
   pHeader[143]= ',';

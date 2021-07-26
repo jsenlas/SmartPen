@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+""" Jakub Sencak, taken from BlueST SDK """
+
 ################################################################################
 # COPYRIGHT(c) 2018 STMicroelectronics                                         #
 #                                                                              #

@@ -17,3 +17,5 @@ run:
 firmware:
 	sudo python ./Firmware_update/fw_update.py 
 
+to_file:
+	sudo python save_data_to_file.py

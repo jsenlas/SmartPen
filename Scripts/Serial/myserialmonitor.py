@@ -1,24 +1,24 @@
 """
-    File name:    visualize.py
-    Author:     Jakub Sencak
-    Email:         xsenca00@stud.fit.vutbr.cz
-    Date created:         2020/10/5
+    File name:      myserialmonitor.py
+    Author:         Jakub Sencak
+    Email:          xsenca00@stud.fit.vutbr.cz
+    Date created:   2020/10/5
     Date last modified: 2021/4/2
     Python Version:     3.9
 
 Python script for data visualization from SpyPen project.
-It collects data from Nucleo board using UART connection over USB
 
-God help me.
-https://gist.github.com/HappyCodingRobot/2009bd736ae0ffb831e34591c1763891
+It was used for collecting data from Nucleo board using UART connection over USB
+and collecting data from Arduino Nano the same way.
 """
+
 import sys
 import argparse
 import re
 import serial
 import serial.tools.list_ports
 
-#### Init -----------------------------------------------------------------
+# Init -----------------------------------------------------------------
 
 DEBUG = True
 
@@ -30,7 +30,7 @@ def print_debug(msg):
 
 ### Serial
 
-def check_port(args):
+def check_port(_args):
     """ Checks if the default port is connected and uses it,
     if not it will choose one containing 'USB' """
     port = None
@@ -38,9 +38,9 @@ def check_port(args):
     x = [print(i) for i in ports]
     port_names = [p.device for p in ports]
 
-    if args.port is not None:
-        if args.port in port_names:
-            port = args.port
+    if _args.port is not None:
+        if _args.port in port_names:
+            port = _args.port
         else:
             return None  # no comport found
     elif USB_PORT_DEFAULT in port_names:
@@ -87,14 +87,15 @@ def add_arguments(parser):
     parser.add_argument("-s", "--speed",
                         help="Should be number 9600, 115200",
                         type=int,
-                        choices=[300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 74880, 115200, 230400, 250000, 500000, 1000000, 2000000],
+                        choices=[300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 
+                                 74880, 115200, 230400, 250000, 500000, 1000000, 2000000],
                         action="store")
-    parser.add_argument("--noport", 
-                        help="Use if you want to skip port selection - only use when debugging.",                        
+    parser.add_argument("--noport",
+                        help="Use if you want to skip port selection - only use when debugging.",
                         action="store_true")
     # parser.add_argument("-", "--", help="", choices=[], action="")
 
-#### Init end ----------------------------------------------
+# Init end ----------------------------------------------
 
 args = get_args()
 

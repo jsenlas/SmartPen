@@ -1,4 +1,4 @@
-""" Opens a data file and siplays a beautigul graph :)
+""" Opens a data file and diplays a beautigul graph :)
     Author: Jakub Sencak
     Email: xsenca00@stud.fit.vutbr.cz
 """

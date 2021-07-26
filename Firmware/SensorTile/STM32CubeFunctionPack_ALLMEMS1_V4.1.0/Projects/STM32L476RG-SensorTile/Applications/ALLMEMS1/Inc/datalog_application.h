@@ -59,7 +59,7 @@ extern void writeAudio_on_sd(void);
 void DATALOG_SD_NewLine(void);
 void uSdWriteSpeedTest(char* myData); // AST
 
-extern void saveData(char *myData, float *Quaternion, BSP_MOTION_SENSOR_Axes_t acc, BSP_MOTION_SENSOR_Axes_t gyro, BSP_MOTION_SENSOR_Axes_t magn, float press, float temp1, float temp2, float humi, uint16_t linesNum);
+extern void saveData(char *myData, float *Quaternion, BSP_MOTION_SENSOR_Axes_t acc, BSP_MOTION_SENSOR_Axes_t gyro, BSP_MOTION_SENSOR_Axes_t magn, BSP_ADS1115_SENSOR_Axes_t fsr_pressure, float press, float temp1, float temp2, float humi, uint16_t linesNum);
 
 
 

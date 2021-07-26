@@ -65,7 +65,7 @@
 
 /* Exported functions ------------------------------------------------------- */
 extern tBleStatus Add_HW_SW_ServW2ST_Service(void);
-extern tBleStatus AccGyroMag_Update(BSP_MOTION_SENSOR_Axes_t *Acc,BSP_MOTION_SENSOR_Axes_t *Gyro,BSP_MOTION_SENSOR_Axes_t *Mag);
+extern tBleStatus AccGyroMag_Update(BSP_MOTION_SENSOR_Axes_t *Acc,BSP_MOTION_SENSOR_Axes_t *Gyro,BSP_MOTION_SENSOR_Axes_t *Mag, BSP_ADS1115_SENSOR_Axes_t *Pressure);
 extern tBleStatus AccEvent_Notify(uint16_t Command, uint8_t dimByte);
 extern tBleStatus Environmental_Update(int32_t Press,uint16_t Hum,int16_t Temp2,int16_t Temp1);
 extern tBleStatus AudioLevel_Update(uint16_t *Mic);

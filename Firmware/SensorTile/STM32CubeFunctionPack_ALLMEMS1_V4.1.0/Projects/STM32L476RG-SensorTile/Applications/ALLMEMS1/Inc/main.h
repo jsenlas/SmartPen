@@ -42,6 +42,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "console.h" 
 #include "ALLMEMS1_config.h"
+#include "ADS1115.h"
 
 /* Exported macro ------------------------------------------------------------*/
 #define MCR_BLUEMS_F2I_1D(in, out_int, out_dec) {out_int = (int32_t)in; out_dec= (int32_t)((in-out_int)*10);};

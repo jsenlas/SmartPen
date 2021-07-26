@@ -1,0 +1,31 @@
+Device: AM1V410 C8:BB:0B:5B:A4:E8
+Format:
+Service UUID | Handle | Name
+	Characteristic UUID | Handle | Name | (Properties) | Value
+		Descriptor UUID | Value
+----------------------------------------------------------------------------------------------------
+Services:
+00001801-0000-1000-8000-00805f9b34fb (Handle: 1): Generic Attribute Profile
+	00002a05-0000-1000-8000-00805f9b34fb (Handle: 2): Service Changed (indicate), Value: None
+00000000-0001-11e1-9ab4-0002a5d5c51b (Handle: 12): Unknown
+	00140000-0001-11e1-ac36-0002a5d5c51b (Handle: 13): Unknown (read,notify), Value: b'\xf9\r\x98\x7f\x01\x00o\x02R\x01B\x01'
+	00e00000-0001-11e1-ac36-0002a5d5c51b (Handle: 16): Unknown (notify), Value: None
+	00000400-0001-11e1-ac36-0002a5d5c51b (Handle: 19): Unknown (read,notify), Value: b'\x02\x0e\x00\x00'
+	04000000-0001-11e1-ac36-0002a5d5c51b (Handle: 22): Unknown (notify), Value: None
+	00020000-0001-11e1-ac36-0002a5d5c51b (Handle: 25): Unknown (read,notify), Value: b'\x0c\x0e\x86\x01\xc1\x0e\xff\xff\x01'
+	00000010-0001-11e1-ac36-0002a5d5c51b (Handle: 28): UPNP (read,notify), Value: b'\x15\x0e\x00'
+	00000100-0001-11e1-ac36-0002a5d5c51b (Handle: 31): L2CAP (notify), Value: None
+	00000040-0001-11e1-ac36-0002a5d5c51b (Handle: 34): Unknown (notify), Value: None
+	00000002-0001-11e1-ac36-0002a5d5c51b (Handle: 37): Unknown (read,notify), Value: b'\x1e\x0e\x00'
+	00000020-0001-11e1-ac36-0002a5d5c51b (Handle: 40): Unknown (notify), Value: None
+	0000000d-0002-11e1-ac36-0002a5d5c51b (Handle: 43): Unknown (read,notify), Value: b'#\x0e\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+	0000000a-0002-11e1-ac36-0002a5d5c51b (Handle: 46): Unknown (write,notify), Value: None
+	00001000-0001-11e1-ac36-0002a5d5c51b (Handle: 49): Service Discovery Server Service Class (read,write,notify), Value: b'(\x0e\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+	08000000-0001-11e1-ac36-0002a5d5c51b (Handle: 52): Unknown (notify), Value: None
+	40000000-0001-11e1-ac36-0002a5d5c51b (Handle: 55): Unknown (notify), Value: None
+00000000-000e-11e1-9ab4-0002a5d5c51b (Handle: 58): Unknown
+	00000001-000e-11e1-ac36-0002a5d5c51b (Handle: 59): SDP (read,write-without-response,write,notify), Value: b''
+	00000002-000e-11e1-ac36-0002a5d5c51b (Handle: 62): Unknown (read,notify), Value: b''
+00000000-000f-11e1-9ab4-0002a5d5c51b (Handle: 65): Unknown
+	00000002-000f-11e1-ac36-0002a5d5c51b (Handle: 66): Unknown (write-without-response,notify), Value: None
+		00002902-0000-1000-8000-00805f9b34fb (Handle: 68): Client Characteristic Configuration) | Value: b'\x00\x00'

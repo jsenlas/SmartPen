@@ -40,6 +40,7 @@
 #include "sensor_service.h"
 #include "DataLog_Manager.h"
 #include "datalog_application.h"
+#include "ADS1115.h"
 
 #include <stdio.h>
 
@@ -61,6 +62,8 @@ extern volatile uint8_t SD_Log_Enabled;
 extern volatile uint8_t SD_LogAudio_Enabled;
 
 extern volatile uint32_t SD_CardLogging;
+
+ADS1xx5_I2C *i2c_handle;
 
 /* Code for MotionFX integration - Start Section */
 extern BSP_MOTION_SENSOR_Axes_t MAG_Offset;
@@ -93,6 +96,7 @@ extern uint16_t PCM_Buffer[];
 static char myBuffer[ARRAYSIZE];
 
 /* Private function prototypes ---------------------------------------------------*/
+static BSP_ADS1115_SENSOR_Axes_t ADS1115_Sensor_Handler_Light(void); //434
 static BSP_MOTION_SENSOR_AxesRaw_t AcceleroRaw_Sensor_Handler_Light(void);
 static BSP_MOTION_SENSOR_Axes_t Accelero_Sensor_Handler_Light(void);
 static BSP_MOTION_SENSOR_Axes_t Gyro_Sensor_Handler_Light(void);
@@ -102,6 +106,11 @@ static float Temperature2_Sensor_Handler_Light(void);
 static float Pressure_Sensor_Handler_Light(void);
 static float Humidity_Sensor_Handler_Light(void);
 
+void set_i2c_handle(ADS1xx5_I2C *i2c_hdl);
+
+void set_i2c_handle(ADS1xx5_I2C *i2c_hdl){
+	i2c_handle = i2c_hdl;
+}
 
 /**
   * @brief  Management of the audio data logging
@@ -180,6 +189,7 @@ void SD_CardLoggingMemsData(void)
   BSP_MOTION_SENSOR_Axes_t Acceleration;
   BSP_MOTION_SENSOR_Axes_t AngularVelocity;
   BSP_MOTION_SENSOR_Axes_t Magnetometer;
+  BSP_ADS1115_SENSOR_Axes_t FSRPressureRaw;
   
   float Temperature_1= 0;
   float Temperature_2= 0;
@@ -206,6 +216,11 @@ void SD_CardLoggingMemsData(void)
   Magnetometer.y= 0;
   Magnetometer.z= 0;
   
+  FSRPressureRaw.w= 0;
+  FSRPressureRaw.x= 0;
+  FSRPressureRaw.y= 0;
+  FSRPressureRaw.z= 0;
+
   if(SD_Card_FeaturesMask & FEATURE_MASK_SENSORFUSION_SHORT)
   {
     AccelerationRaw= AcceleroRaw_Sensor_Handler_Light();
@@ -231,6 +246,8 @@ void SD_CardLoggingMemsData(void)
     Magnetometer.z= 0;
   }
 
+  FSRPressureRaw= ADS1115_Sensor_Handler_Light();
+
   if(SD_Card_FeaturesMask & FEATURE_MASK_ACC)
     Acceleration= Accelero_Sensor_Handler_Light();
   
@@ -253,7 +270,7 @@ void SD_CardLoggingMemsData(void)
     Humidity= Humidity_Sensor_Handler_Light();
   
   openFile(OPEN_FILE_FOR_APP);
-  saveData(myBuffer, Quat, Acceleration, AngularVelocity, Magnetometer, Pressure, Temperature_1, Temperature_2, Humidity, FREQUENCY);
+  saveData(myBuffer, Quat, Acceleration, AngularVelocity, Magnetometer, FSRPressureRaw, Pressure, Temperature_1, Temperature_2, Humidity, FREQUENCY);
   closeFile();
 }
 
@@ -451,6 +468,23 @@ static BSP_MOTION_SENSOR_Axes_t Accelero_Sensor_Handler_Light(void)
   }
   
   return acceleration;
+}
+
+/**
+ * @brief  Handles the accelerometer axes data, fast
+ * @param  None
+ * @retval BSP_MOTION_SENSOR_Axes_t acceleration
+ */
+static BSP_ADS1115_SENSOR_Axes_t ADS1115_Sensor_Handler_Light(void)
+{
+	BSP_ADS1115_SENSOR_Axes_t pressure;
+
+	pressure.w = ADSreadADC_SingleEnded(i2c_handle, A0);
+	pressure.x = ADSreadADC_SingleEnded(i2c_handle, A1);
+	pressure.y = ADSreadADC_SingleEnded(i2c_handle, A2);
+	pressure.z = ADSreadADC_SingleEnded(i2c_handle, A3);
+
+  return pressure;
 }
 
 /**

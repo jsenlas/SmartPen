@@ -54,6 +54,8 @@
 int connected = FALSE;
 uint8_t set_connectable = TRUE;
 
+uint8_t buffsize = 2+3*3*2+4*2;
+
 #ifdef ALLMEMS1_ENABLE_SD_CARD_LOGGING
 uint8_t IsSdMemsRecording= 0;
 uint8_t IsSdAudioRecording= 0;
@@ -1070,10 +1072,10 @@ tBleStatus Add_HW_SW_ServW2ST_Service(void)
   if (ret != BLE_STATUS_SUCCESS) {
     goto fail;
   }
-
+  //434
   COPY_ACC_GYRO_MAG_W2ST_CHAR_UUID(uuid);
-  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2+3*3*2,
-                           CHAR_PROP_NOTIFY,
+  ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, uuid, 2+3*3*2+4*2,
+                           CHAR_PROP_NOTIFY|CHAR_PROP_READ,
                            ATTR_PERMISSION_NONE,
                            GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
                            16, 0, &AccGyroMagCharHandle);
@@ -1280,14 +1282,16 @@ fail:
  * @param  BSP_MOTION_SENSOR_Axes_t Mag Structure containing magneto value
  * @retval tBleStatus      Status
  */
-tBleStatus AccGyroMag_Update(BSP_MOTION_SENSOR_Axes_t *Acc,BSP_MOTION_SENSOR_Axes_t *Gyro,BSP_MOTION_SENSOR_Axes_t *Mag)
+tBleStatus AccGyroMag_Update(BSP_MOTION_SENSOR_Axes_t *Acc,BSP_MOTION_SENSOR_Axes_t *Gyro,BSP_MOTION_SENSOR_Axes_t *Mag, BSP_ADS1115_SENSOR_Axes_t *Pressure)
 {  
   tBleStatus ret;
   int32_t x;
   int32_t y;
   int32_t z;
 
-  uint8_t buff[2+3*3*2];
+  // 2 (tick) + 3sensors * 3data * 2B + 4data *2B
+  uint8_t buff_size = 2+3*3*2+4*2;
+  uint8_t buff[buff_size];
 
   STORE_LE_16(buff   ,(HAL_GetTick()>>3));
   
@@ -1312,7 +1316,13 @@ tBleStatus AccGyroMag_Update(BSP_MOTION_SENSOR_Axes_t *Acc,BSP_MOTION_SENSOR_Axe
   STORE_LE_16(buff+16,y);
   STORE_LE_16(buff+18,z);
   
-  ret = ACI_GATT_UPDATE_CHAR_VALUE(HWServW2STHandle, AccGyroMagCharHandle, 0, 2+3*3*2, buff);
+  /* Pressure data */
+  STORE_LE_16(buff+20,Pressure->w);
+  STORE_LE_16(buff+22,Pressure->x);
+  STORE_LE_16(buff+24,Pressure->y);
+  STORE_LE_16(buff+26,Pressure->z);
+
+  ret = ACI_GATT_UPDATE_CHAR_VALUE(HWServW2STHandle, AccGyroMagCharHandle, 0, buff_size, buff);
 	
   if (ret != BLE_STATUS_SUCCESS){
     if(W2ST_CHECK_CONNECTION(W2ST_CONNECT_STD_ERR)){

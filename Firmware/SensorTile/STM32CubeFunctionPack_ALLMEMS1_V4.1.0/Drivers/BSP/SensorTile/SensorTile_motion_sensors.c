@@ -1241,6 +1241,12 @@ void LSM303AGR_SPI_Write(SPI_HandleTypeDef* xSpiHandle, uint8_t val)
   while ((xSpiHandle->Instance->SR & SPI_FLAG_BSY) == SPI_FLAG_BSY);
 }
 
+//434
+void ADS1115_GET_VALUE(BSP_ADS1115_SENSOR_Axes_t *val){
+
+	BSP_ADS1115_SENSOR_Axes_t pressure;
+
+}
 
 #endif
 

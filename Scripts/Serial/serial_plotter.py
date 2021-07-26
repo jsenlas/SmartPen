@@ -1,31 +1,47 @@
-import sys, select, os
+""" 
+    File name:      serial_plotter.py
+    Author:         Jakub Sencak
+    Email:          xsenca00@stud.fit.vutbr.cz
+    Date created:           2020/12/5
+    Date last modified:     2021/4/2
+    Python Version:     3.9
 
-import serial
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.integrate import simpson, cumulative_trapezoid
-from scipy.signal import butter, sosfilt
-import matplotlib.animation as animation
+"""
+
+import sys
+import select
 from collections import deque
 
+import serial
+
+import numpy as np
+
+# from scipy.integrate import simpson, cumulative_trapezoid
+from scipy.signal import butter, sosfilt
+
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
+
 SEPARATOR = ","
-max_length = 300
+MAX_LENGTH = 300
 
 plot_limit_y_plus = 100
 plot_limit_y_minus = -100
 
 dt = 9.81
 G = 9.8  # acceleration due to gravity, in m/s^2
-L = max_length
+L = MAX_LENGTH
 t_stop = 5  # how many seconds to simulate
 
-samplePeriod = 1/50
-filtCutOff = 0.001
-filter_const_highpass = (2*filtCutOff)/(1/samplePeriod)
-filtCutOff = 5
-filter_const_lowpass = (2*filtCutOff)/(1/samplePeriod)
+SAMPLE_PERIOD = 1/50
+FILTER_CUTOFF = 0.001
+FILTER_CONST_HIGHPASS = (2*FILTER_CUTOFF)/(1/SAMPLE_PERIOD)
+FILTER_CUTOFF = 5
+FILTER_CONST_LOWPASS = (2*FILTER_CUTOFF)/(1/SAMPLE_PERIOD)
 
 def get_movement():
+    """ read data from serial port """
     global raw
     data = None
     try:
@@ -40,7 +56,12 @@ def get_movement():
 
 
 def update_limits(data_list):
-    pass
+    """ Not enough time to do this... Performance during animation is poooor.
+        This function was not updated for a looong time but should give an idea
+        hopefully not a bad one :/
+    """
+    data_list = data_list  # just beacause
+    return
     # tmp = []
     # tmp.append(x_data)
     # tmp.append(y_data)
@@ -79,7 +100,7 @@ def update_limits(data_list):
     #         ax.set_ylim(y_min, y_max)
     #         plot_limit_y_plus = y_max
     #         plot_limit_y_minus = y_min
-
+    
 
 def generator():
     # x, y, z = [], [], []
@@ -113,21 +134,25 @@ def animate(i):
         acc_z_data_filtered = sosfilt(sos_low, sosfilt(sos_high, acc_z_data))
 
     if format_flags['G']:
-        # devided by 100 to get m/ss
         gyro_x_data.appendleft(ln[0])
         gyro_y_data.appendleft(ln[1])
         gyro_z_data.appendleft(ln[2])
-    
+
     if format_flags['M']:
-        # devided by 100 to get m/ss
         mag_x_data.appendleft(ln[6])
         mag_y_data.appendleft(ln[7])
         mag_z_data.appendleft(ln[8])
 
+    if False and format_flags['Q']:
+        quaw_data.appendleft(ln[0])
+        quax_data.appendleft(ln[0])
+        quay_data.appendleft(ln[0])
+        quaz_data.appendleft(ln[0])
+
     t = np.arange(len(acc_x_data))
 
     if not pause:
-        # update_limits(ln)
+        # update_limits(ln)  # not enough time for this
         if format_flags['A'] or format_flags['L']:
             accx.set_data(t, acc_x_data_filtered)
             accy.set_data(t, acc_y_data_filtered)
@@ -141,12 +166,11 @@ def animate(i):
             magy.set_data(t, mag_y_data)
             magz.set_data(t, mag_z_data)
 
-        if format_flags['Q']:
-            pass
-            # quaw.set_data(t, quaw_data)
-            # quax.set_data(t, quax_data)
-            # quay.set_data(t, quay_data)
-            # quaz.set_data(t, quaz_data)
+        if False and format_flags['Q']:
+            quaw.set_data(t, quaw_data)
+            quax.set_data(t, quax_data)
+            quay.set_data(t, quay_data)
+            quaz.set_data(t, quaz_data)
     return accx, accy, accz, gyrox, gyroy, gyroz, magx, magy, magz,
 
 def read_serial(write_file=True):
@@ -164,6 +188,7 @@ def read_serial(write_file=True):
 
 
 def set_flags(format_list, disable=""):
+    """ Depending on what data is on serial port it can mask any graph """
     default_format = ["GROXYZ", "ACCXYZ", "LINXYZ", "MAGXYZ", "QUAWXYZ", "VELXYZ", "POSXYZ"]
     flags = {'A': False,
              'G': False,
@@ -176,15 +201,14 @@ def set_flags(format_list, disable=""):
     for format_str in format_list:
         if format_str in default_format:
             flags[format_str[0]] = True
-    
+
     if isinstance(disable, list):
         for d in disable:
             flags[d] = False
     if disable:
         flags[disable] = False
     return flags
-            
-            
+
 
 try:
     raw = serial.Serial("/dev/ttyUSB0", 19200)
@@ -208,24 +232,23 @@ fig, axes = plt.subplots(nrows=num_data_types, ncols=1, figsize=(25, 12), dpi=80
 fig.subplots_adjust(hspace=0.5)
 
 def onClick(event):
+    """ callback for mouse button press, it freezes the graph """
     global pause
+    event = event  # just beacause
     pause ^= True
+
 fig.canvas.mpl_connect('button_press_event', onClick)
 pause = False
 
-sos_high = butter(1, filter_const_highpass, btype='high', analog=False, output='sos', fs=None)
-sos_low = butter(1, filter_const_lowpass, btype='low', analog=False, output='sos');
+sos_high = butter(1, FILTER_CONST_HIGHPASS, btype='high', analog=False, output='sos', fs=None)
+sos_low = butter(1, FILTER_CONST_LOWPASS, btype='low', analog=False, output='sos')
 
 axes_index = 0
 
-# for k,v in format_flags.keys():
-#     graph_list.append(Graph())
-
-
 if format_flags['A'] or format_flags['L']:
-    acc_x_data = deque(maxlen=max_length)
-    acc_y_data = deque(maxlen=max_length)
-    acc_z_data = deque(maxlen=max_length)
+    acc_x_data = deque(maxlen=MAX_LENGTH)
+    acc_y_data = deque(maxlen=MAX_LENGTH)
+    acc_z_data = deque(maxlen=MAX_LENGTH)
 
     ax = axes[axes_index]
     axes_index += 1
@@ -249,9 +272,9 @@ if format_flags['A'] or format_flags['L']:
               accz.get_label()])
 
 if format_flags['G']:
-    gyro_x_data = deque(maxlen=max_length)
-    gyro_y_data = deque(maxlen=max_length)
-    gyro_z_data = deque(maxlen=max_length)
+    gyro_x_data = deque(maxlen=MAX_LENGTH)
+    gyro_y_data = deque(maxlen=MAX_LENGTH)
+    gyro_z_data = deque(maxlen=MAX_LENGTH)
 
     ax = axes[axes_index]
     axes_index += 1
@@ -275,9 +298,9 @@ if format_flags['G']:
               gyroz.get_label()])
 
 if format_flags['M']:
-    mag_x_data = deque(maxlen=max_length)
-    mag_y_data = deque(maxlen=max_length)
-    mag_z_data = deque(maxlen=max_length)
+    mag_x_data = deque(maxlen=MAX_LENGTH)
+    mag_y_data = deque(maxlen=MAX_LENGTH)
+    mag_z_data = deque(maxlen=MAX_LENGTH)
 
     ax = axes[axes_index]
     axes_index += 1
@@ -300,23 +323,29 @@ if format_flags['M']:
               magy.get_label(),
               magz.get_label()])
 
-# ax_qu = axes[2]
-# ax_qu.set(
-#     xlim=(0, L),
-#     ylim=(-1, 1),
-#     autoscale_on=False,
-#     xlabel='samples',
-#     ylabel='Quaternions [-]')
+if False and format_flags['Q']:
+    quaw_data = deque([0.0] * MAX_LENGTH, maxlen=MAX_LENGTH)
+    quax_data = deque([0.0] * MAX_LENGTH, maxlen=MAX_LENGTH)
+    quay_data = deque([0.0] * MAX_LENGTH, maxlen=MAX_LENGTH)
+    quaz_data = deque([0.0] * MAX_LENGTH, maxlen=MAX_LENGTH)
 
-# quaw, = ax_qu.plot([], [], 'y', lw=1, label="w")
-# quax, = ax_qu.plot([], [], 'r', lw=1, label="x")
-# quay, = ax_qu.plot([], [], 'g', lw=1, label="y")
-# quaz, = ax_qu.plot([], [], 'b', lw=1, label="z")
+    ax = axes[axes_index]
+    axes_index += 1
+    ax.set(
+        xlim=(0, L),
+        ylim=(-1, 1),
+        autoscale_on=False,
+        xlabel='samples',
+        ylabel='Quaternions [-]')
 
-# quaw_data = deque([0.0] * max_length, maxlen=max_length)
-# quax_data = deque([0.0] * max_length, maxlen=max_length)
-# quay_data = deque([0.0] * max_length, maxlen=max_length)
-# quaz_data = deque([0.0] * max_length, maxlen=max_length)
+    ax.set_adjustable("box")
+    ax.grid()
+
+    quaw, = ax.plot([], [], 'y', lw=1, label="w")
+    quax, = ax.plot([], [], 'r', lw=1, label="x")
+    quay, = ax.plot([], [], 'g', lw=1, label="y")
+    quaz, = ax.plot([], [], 'b', lw=1, label="z")
+
 
 # wait for calibration and hit enter
 while True:
@@ -328,9 +357,9 @@ fp = open("data.txt", "w")
 
 # All performace is hidden in BLIT, it doesn't redraw the whole picture.
 # Without BLIT performance drops to about 10 fps on my machine.
-ani = animation.FuncAnimation(fig, 
-                              animate, 
-                              interval=10, 
-                              blit=True, 
+ani = animation.FuncAnimation(fig,
+                              animate,
+                              interval=10,
+                              blit=True,
                               frames=1)
 plt.show()

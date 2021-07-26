@@ -22,3 +22,4 @@ SensorTile_motion_sensors.c:485:9:BSP_MOTION_SENSOR_GetOutputDataRate	16	static
 SensorTile_motion_sensors.c:525:9:BSP_MOTION_SENSOR_GetFullScale	16	static
 SensorTile_motion_sensors.c:565:9:BSP_MOTION_SENSOR_SetOutputDataRate	16	static
 SensorTile_motion_sensors.c:605:9:BSP_MOTION_SENSOR_SetFullScale	16	static
+SensorTile_motion_sensors.c:1245:6:ADS1115_GET_VALUE	0	static
